@@ -7,11 +7,21 @@ const WEEKEND_THRESHOLD = 3;
 const SATURDAY_DAY_NUMBER = 6;
 const SUNDAY_DAY_NUMBER = 0;
 
-const calculateDueDate = (submitDate, turnaround) => {
-  if (!submitDate) {
-    throw new Error('SubmitDate is required');
+const validate = (submitDate, turnaround) => {
+  if (!(submitDate instanceof Date) || isNaN(submitDate)) {
+    throw new Error('SubmitDate is invalid');
   }
+  if (!turnaround) {
+    throw new Error('Turnaround is required');
+  }
+  if (!Number.isInteger(turnaround)) {
+    throw new Error('Turnaround is not a number');
+  }
+};
+
+const calculateDueDate = (submitDate, turnaround) => {
   const submitDateTime = new Date(submitDate);
+  validate(submitDateTime, turnaround);
   const startWorkingTime = getStartWorkingTime(submitDateTime);
   const clearDevDays = Math.floor(turnaround / WORK_HOURS);
   const clearDevWeeks = Math.floor(clearDevDays / WORK_DAYS);

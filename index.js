@@ -1,14 +1,6 @@
-// import yargs from 'yargs';
-// import calculateDueDate from './calculateDueDate.js';
-
 const yargs = require('yargs');
 const calculateDueDate = require('./calculateDueDate');
-const dayjs = require('dayjs');
-// const hu = require('dayjs/locale/hu');
-// console.log(yargs);
-// dayjs.locale(hu);
 
-//  Inputok ellenorzese?
 yargs.command({
   command: 'calculate',
   describe: 'Calculate due date',
@@ -31,16 +23,7 @@ yargs.command({
     }
   },
   handler(argv) {
-    // let submitDate = argv.submitDate + 'T' + argv.submitTime + '.000Z';
-    let submitDate = argv.submitDate + ' ' + argv.submitTime;
-    const test = new Date('2021-04-22');
-    // console.log(test);
-    // console.log(test.getHours());
-    // test.setHours(9);
-    // console.log(test);
-    // console.log(test.getHours());
-    // console.log(test.getTimezoneOffset());
-    console.log('test.toDateString()', test.toString());
+    const submitDate = `${argv.submitDate} ${argv.submitTime}`;
     const finishDate = calculateDueDate(submitDate, argv.turnaround);
     console.log(finishDate);
   }
