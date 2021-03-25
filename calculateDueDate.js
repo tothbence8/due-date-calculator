@@ -54,7 +54,6 @@ const calculateDueDate = (submitDate, turnaround) => {
       endDateTime = addDays(tempEndDateTime, 1);
     }
   }
-  console.log(endDateTime);
   return endDateTime.toLocaleString('hu-HU', { timezone: 'Europe/Budapest' });
 };
 
