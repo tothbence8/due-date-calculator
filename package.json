@@ -1,0 +1,18 @@
+{
+  "name": "due-date-calculator",
+  "version": "1.0.0",
+  "description": "Calculate due date",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node index.js calculate"
+  },
+  "author": "Bence Toth <toth.b8@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "yargs": "^16.2.0"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
