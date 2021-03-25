@@ -1,9 +1,18 @@
 # Due Date Calculator
-
-### How to use?
+### Install
 
 ```shell script
-yarn start --submitDate="2021-03-25" --submitTime="12:21:11" --turnaround="4" 
+yarn add due-date-calculator-tb
+```
+or
+```shell script
+npm install due-date-calculator-tb
+```
+### How to use?
+
+```javascript
+const calculate = require('due-date-calculator-tb');
+const result = calculate('2021-03-25 11:10:10', 4);
 ```
 
 ### Run tests

@@ -1,4 +1,4 @@
-const calculateDueDate = require('./calculateDueDate');
+const calculateDueDate = require('./');
 
 describe('#validation', () => {
   test('should throw an error if sumbitDate is not valid', () => {
