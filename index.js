@@ -1,91 +1,43 @@
-const WORK_HOURS = 8;
-const WORK_DAYS = 5;
-const BEGIN_HOUR = 9;
-const END_HOUR = 17;
-const WEEK_DAYS_NUMBER = 7;
-const WEEKEND_THRESHOLD = 3;
-const SATURDAY_DAY_NUMBER = 6;
-const SUNDAY_DAY_NUMBER = 0;
+const {
+  START_HOUR_OF_DAY,
+  END_HOUR_OF_DAY
+} = require('./consts')
 
-const validate = (submitDate, turnaround) => {
-  if (!(submitDate instanceof Date) || isNaN(submitDate)) {
-    throw new Error('SubmitDate is invalid');
+const {
+  isFriday,
+  addHoursToDate,
+  addDaysToDate
+} = require('./utils');
+
+const {
+  validateSubmitDate,
+  validateTurnaround
+} = require('./validation');
+
+const calculateDueDate = (currentDate, remainingHours) => {
+  if (remainingHours === 0) {
+    return currentDate;
   }
-  if (!turnaround) {
-    throw new Error('Turnaround is required');
-  }
-  if (!Number.isInteger(turnaround)) {
-    throw new Error('Turnaround is not a number');
-  }
-};
 
-const calculateDueDate = (submitDate, turnaround) => {
-  const submitDateTime = new Date(submitDate);
-  validate(submitDateTime, turnaround);
-  const startWorkingTime = getStartWorkingTime(submitDateTime);
-  const clearDevDays = Math.floor(turnaround / WORK_HOURS);
-  const clearDevWeeks = Math.floor(clearDevDays / WORK_DAYS);
-  const restDevDays = clearDevDays % WORK_DAYS;
-  const restDevHours = turnaround % WORK_HOURS;
-
-  const tempEndWeek = clearDevWeeks !== 0 ?
-    addDays(startWorkingTime, clearDevWeeks * WEEK_DAYS_NUMBER) :
-    startWorkingTime;
-
-  let tempEndDate = new Date(tempEndWeek);
-
-  if (restDevDays) {
-    if (tempEndWeek.getDay() + restDevDays > 5) {
-      tempEndDate = addDays(tempEndWeek, restDevDays + 2);
-    } else {
-      tempEndDate = addDays(tempEndWeek, restDevDays);
+  let dueDate = addHoursToDate(currentDate, 1);
+  if (dueDate.getHours() >= END_HOUR_OF_DAY) {
+    if (isFriday(dueDate)) {
+      dueDate = addDaysToDate(dueDate, 2);
     }
+    dueDate = addDaysToDate(dueDate, 1);
+    dueDate.setHours(START_HOUR_OF_DAY);
   }
 
-  let tempEndDateTime = new Date(tempEndDate);
-  tempEndDateTime.setHours(tempEndDateTime.getHours() + restDevHours);
-
-  let endDateTime = new Date(tempEndDateTime);
-  if (tempEndDateTime.getHours() >= END_HOUR) {
-    tempEndDateTime.setHours(tempEndDateTime.getHours() - WORK_HOURS);
-    if (tempEndDateTime.getDay() === WORK_DAYS) {
-      endDateTime = addDays(tempEndDateTime, WEEKEND_THRESHOLD);
-    } else {
-      endDateTime = addDays(tempEndDateTime, 1);
-    }
-  }
-  return endDateTime.toLocaleString('hu-HU', { timezone: 'Europe/Budapest' });
+  return calculateDueDate(dueDate, remainingHours - 1);
 };
 
-const getStartWorkingTime = (dateTime) => {
-  if (dateTime.getDay() === SUNDAY_DAY_NUMBER) {
-    const nextWorkingDay = addDays(dateTime, 1);
-    nextWorkingDay.setHours(BEGIN_HOUR, 0, 0, 0);
-    return nextWorkingDay;
-  }
-  if (dateTime.getDay() === SATURDAY_DAY_NUMBER) {
-    const nextWorkingDay = addDays(dateTime, 2);
-    nextWorkingDay.setHours(BEGIN_HOUR, 0, 0, 0);
-    return nextWorkingDay;
-  }
-  if (dateTime.getHours() < BEGIN_HOUR) {
-    const nextTime = new Date(dateTime);
-    nextTime.setHours(BEGIN_HOUR, 0, 0, 0);
-    return nextTime;
-  }
-  if (dateTime.getHours() >= END_HOUR) {
-    const nextDay = addDays(dateTime, 1);
-    nextDay.setHours(BEGIN_HOUR, 0, 0, 0);
-    return getStartWorkingTime(nextDay);
-  } else {
-    return dateTime;
-  }
+const calculator = (submitDate, turnaround) => {
+  validateSubmitDate(submitDate);
+  validateTurnaround(turnaround);
+
+  const dueDate = calculateDueDate(new Date(submitDate), turnaround);
+
+  return dueDate.toLocaleString('hu-HU');
 };
 
-const addDays = (date, days) => {
-  const result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
-};
-
-module.exports = calculateDueDate;
+module.exports = calculator;
