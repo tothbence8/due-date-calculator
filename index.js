@@ -1,7 +1,7 @@
 const {
   START_HOUR_OF_DAY,
   END_HOUR_OF_DAY
-} = require('./consts')
+} = require('./consts');
 
 const {
   isFriday,
