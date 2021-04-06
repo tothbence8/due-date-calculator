@@ -1194,6 +1194,11 @@ domexception@^2.0.1:
   dependencies:
     webidl-conversions "^5.0.0"
 
+due-date-calculator-tb@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/due-date-calculator-tb/-/due-date-calculator-tb-1.0.0.tgz#e6329e7608b0a3e60cc7ee1072f5ebeded41e601"
+  integrity sha512-Y6D+n9hA67ACDwlKimoF0rAYLO3aF7acylWUHIIeso2YK2EHhCldwLo5+6fMUIrqnM8ZDuT0iMWPZuH4w7kXjQ==
+
 ecc-jsbn@~0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/ecc-jsbn/-/ecc-jsbn-0.1.2.tgz#3a83a904e54353287874c564b7549386849a98c9"

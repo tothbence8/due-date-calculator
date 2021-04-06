@@ -10,5 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "jest": "^26.6.3"
+  },
+  "dependencies": {
+    "due-date-calculator-tb": "^1.0.0"
   }
 }
